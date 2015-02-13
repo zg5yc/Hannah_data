@@ -1,14 +1,14 @@
 # Welcome! To data aggregator!
 
 # Read in the data file
-dat <- read.delim("Sub1.txt") 
+dat <- read.delim("./raw_data/Sub1.txt") 
 head(dat)
 View(dat)
 
 # Basic data import, label, and concatenate loop
-dat1 <- read.delim("Sub1.txt")
+dat1 <- read.delim("./raw_data/Sub1.txt")
 dat1$ID = 1 
-dat2 <- read.delim("Sub2.txt") 
+dat2 <- read.delim("./raw_data/Sub2.txt") 
 dat2$ID = 2
 dat <- rbind(dat1, dat2)
 
@@ -24,14 +24,14 @@ paste("Sub", 1:27, sep="") # aha!
 paste("Sub", 1:27, ".txt", sep="")
 
 for (i in 1:27) {
-  fileName = paste("Sub", i, ".txt", sep="")
+  fileName = paste("./raw_data/Sub", i, ".txt", sep="")
   print(fileName)
 }
 
 
 dat = data.frame(NULL) # make empty container
 for (i in 1:27) {
-  fileName = paste("Sub", i, ".txt", sep="") # make filename
+  fileName = paste("./raw_data/Sub", i, ".txt", sep="") # make filename
   temp = read.delim(file=fileName, stringsAsFactors=F) # read data with filename
   temp$ID = i # mark data with subject number
   dat = rbind(dat, temp) # staple it to previous
@@ -70,3 +70,7 @@ for (i in nose_range) {
 View(dat)
 sub2dat = dat[dat$ID == 2,]
 table(sub2dat$fixation, sub2dat$Block)
+
+# export data for analysis
+write.table(dat, "cleaned_data.txt", sep="\t", row.names=F)
+
