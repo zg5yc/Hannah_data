@@ -70,7 +70,7 @@ for (i in nose_range) {
 View(dat)
 sub2dat = dat[dat$ID == 2,]
 table(sub2dat$fixation, sub2dat$Block)
-
+x
 # export data for analysis
 write.table(dat, "cleaned_data.txt", sep="\t", row.names=F)
 
