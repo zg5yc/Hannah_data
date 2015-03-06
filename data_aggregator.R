@@ -1,5 +1,5 @@
 # Welcome! To data aggregator!
-
+#To DO: hwandle bug on line 82, matches stuff 
 # Read in the data file
 dat <- read.delim("./raw_data/Sub1.txt") 
 head(dat)
@@ -70,7 +70,33 @@ for (i in nose_range) {
 View(dat)
 sub2dat = dat[dat$ID == 2,]
 table(sub2dat$fixation, sub2dat$Block)
-x
+
 # export data for analysis
 write.table(dat, "cleaned_data.txt", sep="\t", row.names=F)
 
+# fix block fixation data, too
+table(dat$FaceFilename[dat$Block==3]) #looks like range is 1-48
+temp=dat$Facefilename[dat$Block==3]
+table(temp)
+
+# We can do a similar thing to fix the point of fixation
+forehead_range = c(1:8, 25:32)
+eyes_range = c(9:16, 33:40) #BUG: matches for forehead.
+nose_range = c(17:24, 41:48)
+
+dat$fixation = NA # empty container
+for (i in forehead_range) {
+  dat$fixation[grepl(i, dat$FaceFilename) & dat$Block == 3] = "forehead"
+} # note that this will still match 1 with 11, 21, but we're gonna fix those later
+for (i in eyes_range) {
+  dat$fixation[grepl(i, dat$FaceFilename)& dat$Block == 3] = "eyes"
+}
+for (i in nose_range) {
+  dat$fixation[grepl(i, dat$FaceFilename)& dat$Block == 3] = "nose"
+} # not a problem now because it won't match 21 to 1
+
+sub2dat = dat[dat$ID == 2,]
+table(sub2dat$fixation, sub2dat$Block)
+
+#export data for analysis
+write.table(dat, "cleaned_dat")
